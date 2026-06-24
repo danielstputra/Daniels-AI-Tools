@@ -38,6 +38,7 @@ import type { TierConfig } from "./lib/tiers";
 
 const app = express();
 const PORT = parseInt(process.env.PORT || "7860", 10); // HF Spaces default
+const HOST = "0.0.0.0";
 
 // ── Middleware ─────────────────────────────────────────────────────────
 // CORS: Allow configured origins. When self-hosting, set CORS_ORIGIN=* to allow all.
@@ -307,7 +308,7 @@ app.use(
 );
 
 // ── Start ─────────────────────────────────────────────────────────────
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, HOST, () => {
   const hfStatus = isPublisherEnabled()
     ? `ON → ${process.env.HF_DATASET_REPO}`
     : "OFF (set HF_TOKEN + HF_DATASET_REPO to enable)";
@@ -315,7 +316,7 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`
   ╔══════════════════════════════════════════════════════════╗
   ║  G0DM0D3 Research Preview API v0.4.0                     ║
-  ║  Listening on http://0.0.0.0:${PORT}                       ║
+  ║  Listening on http://${HOST}:${PORT}                       ║
   ║                                                          ║
   ║  TIERS:                                                  ║
   ║  FREE        5 req total, 10/min, 50/day                ║
