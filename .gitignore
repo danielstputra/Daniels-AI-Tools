@@ -53,3 +53,5 @@ desktop.ini
 # Editor (VS Code)
 .vscode/
 .vercel
+
+.railway_token
