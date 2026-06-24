@@ -1,0 +1,54 @@
+# =========================================
+# 1. DEPENDENSI & CACHE NODE.JS
+# =========================================
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnpm-debug.log
+
+# =========================================
+# 2. VERCEL & DEPLOYMENT
+# =========================================
+.vercel/
+.vercel_token
+
+# =========================================
+# 3. SCRIPT OTOMASI PRIBADI (STEALTH MODE)
+# =========================================
+auto-deploy.bat
+
+# =========================================
+# 4. ENVIRONMENT VARIABLES (FILE RAHASIA)
+# =========================================
+# Sangat penting agar password/API key tidak bocor ke GitHub!
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =========================================
+# 5. LOGS & BUILD FOLDER (JIKA ADA)
+# =========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+out/
+
+# =========================================
+# 6. FILE SISTEM OS & EDITOR
+# =========================================
+# Windows
+Thumbs.db
+desktop.ini
+
+# Mac
+.DS_Store
+
+# Editor (VS Code)
+.vscode/
