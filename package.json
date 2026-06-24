@@ -6,7 +6,7 @@
   "license": "AGPL-3.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "set NODE_OPTIONS=--localstorage-file=.localstorage&& next build",
     "start": "next start",
     "lint": "next lint",
     "api": "tsx api/server.ts",
@@ -30,6 +30,7 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260624.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/js-yaml": "^4.0.9",

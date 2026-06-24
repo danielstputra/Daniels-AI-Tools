@@ -52,3 +52,4 @@ desktop.ini
 
 # Editor (VS Code)
 .vscode/
+.vercel

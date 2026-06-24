@@ -19,6 +19,8 @@
  *   telemetry/batch_<timestamp>_<hash>.jsonl
  */
 
+import type { PagesFunction } from "@cloudflare/workers-types";
+
 interface Env {
   HF_TOKEN: string;
   HF_DATASET_REPO: string;
@@ -113,7 +115,7 @@ function validateEvent(event: unknown): event is TelemetryEvent {
 
 // Handle CORS preflight
 export const onRequestOptions: PagesFunction<Env> = async () => {
-  return new Response(null, { status: 204, headers: CORS_HEADERS });
+  return new Response(null, { status: 204, headers: CORS_HEADERS }) as any;
 };
 
 // Main handler: receive events and push to HF
@@ -214,7 +216,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         "Failed to publish to HuggingFace — check function logs for details",
     },
     502,
-  );
+  ) as any;
 };
 
 // ── HuggingFace Hub Commit ───────────────────────────────────────────
