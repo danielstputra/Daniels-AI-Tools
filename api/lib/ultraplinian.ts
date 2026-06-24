@@ -9,7 +9,7 @@
  */
 
 // ── DANIELS AI System Prompt (imported from single source of truth) ─────
-export { DANIELSAI_SYSTEM_PROMPT } from "../../src/lib/danielsai-prompt";
+export { DANIELSAI_SYSTEM_PROMPT } from "../../src/lib/godmode-prompt";
 
 // ── Depth Directive (appended to all ULTRAPLINIAN prompts) ───────────
 
