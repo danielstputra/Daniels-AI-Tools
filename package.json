@@ -5,19 +5,20 @@
   "description": "🧠 DANIELS AI - Liberated AI Chat Interface for Hackers",
   "license": "AGPL-3.0",
   "scripts": {
-    "dev": "concurrently \"next dev\" \"tsx watch api/server.ts\"",
     "build": "next build",
-    "start": "concurrently \"next start\" \"tsx api/server.ts\"",
     "lint": "next lint",
     "serve": "serve out",
-    "api": "tsx api/server.ts",
-    "api:dev": "tsx watch api/server.ts"
+    "start:frontend": "next start",
+    "start:api": "npx tsx api/server.ts",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:api\"",
+    "dev": "concurrently \"next dev\" \"npx tsx watch api/server.ts\""
   },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "framer-motion": "^11.0.0",
     "helmet": "^8.1.0",
+    "http-proxy-middleware": "^3.0.7",
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.344.0",
     "next": "^14.2.0",

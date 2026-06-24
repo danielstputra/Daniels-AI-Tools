@@ -37,6 +37,7 @@ RUN chown -R app:app /app /home/app /app/.next
 
 # Install concurrently agar bisa jalanin 2 proses sekaligus
 RUN npm install -g concurrently
+RUN npm install http-proxy-middleware
 
 # Switch to non-root user
 USER app
