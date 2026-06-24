@@ -3,7 +3,7 @@
  *
  * POST /v1/ultraplinian/completions
  *
- * Queries N models in parallel with the GODMODE system prompt + Depth Directive,
+ * Queries N models in parallel with the DANIELS AI system prompt + Depth Directive,
  * scores all responses on substance/directness/completeness, and returns the winner
  * alongside full race metadata.
  *
@@ -15,9 +15,9 @@
  * - Final polished result sent as race:complete
  *
  * Full pipeline per model:
- * 1. GODMODE system prompt + Depth Directive injected
+ * 1. DANIELS AI system prompt + Depth Directive injected
  * 2. AutoTune computes context-adaptive parameters
- * 3. GODMODE parameter boost applied (+temp, +presence, +freq)
+ * 3. DANIELS AI parameter boost applied (+temp, +presence, +freq)
  * 4. Parseltongue obfuscates trigger words (if enabled)
  * 5. All models queried in parallel via OpenRouter
  * 6. Responses scored and ranked (threshold-gated leader upgrades)
@@ -37,7 +37,7 @@ import {
 import { allModules, applySTMs, type STMModule } from "../../src/stm/modules";
 import { getSharedProfiles } from "./autotune";
 import {
-  GODMODE_SYSTEM_PROMPT,
+  DANIELSAI_SYSTEM_PROMPT,
   DEPTH_DIRECTIVE,
   getModelsForTier,
   raceModels,
@@ -60,7 +60,7 @@ ultraplinianRoutes.post("/completions", async (req, res) => {
       openrouter_api_key: caller_key,
       // ULTRAPLINIAN options
       tier = "fast" as SpeedTier,
-      godmode = true,
+      danielsai = true,
       custom_system_prompt,
       // AutoTune options
       autotune = true,
@@ -118,7 +118,7 @@ ultraplinianRoutes.post("/completions", async (req, res) => {
     // Clamp liquid_min_delta to valid range
     const minDelta = Math.max(1, Math.min(50, Number(liquid_min_delta) || 8));
 
-    // ── Build messages with GODMODE prompt ────────────────────────────
+    // ── Build messages with DANIELS AI prompt ────────────────────────────
     const normalizedMessages = messages.map((m: any) => ({
       role: m.role as "system" | "user" | "assistant",
       content: String(m.content || ""),
@@ -130,9 +130,9 @@ ultraplinianRoutes.post("/completions", async (req, res) => {
       .find((m) => m.role === "user");
     const userContent = lastUserMsg?.content || "";
 
-    // Build the system prompt: GODMODE + Depth Directive (or custom)
-    let systemPrompt = godmode
-      ? (custom_system_prompt || GODMODE_SYSTEM_PROMPT) + DEPTH_DIRECTIVE
+    // Build the system prompt: DANIELS AI + Depth Directive (or custom)
+    let systemPrompt = danielsai
+      ? (custom_system_prompt || DANIELSAI_SYSTEM_PROMPT) + DEPTH_DIRECTIVE
       : custom_system_prompt || "";
 
     // ── Conversation continuity directive ──────────────────────────
@@ -202,8 +202,8 @@ Ignoring conversation history will cause you to LOSE the evaluation.`;
       };
     }
 
-    // Apply GODMODE boost
-    if (godmode) {
+    // Apply DANIELS AI boost
+    if (danielsai) {
       finalParams = applyGodmodeBoost(finalParams);
     }
 
@@ -285,7 +285,7 @@ Ignoring conversation history will cause you to LOSE the evaluation.`;
         previous_winner: previous_winner || null,
         params_used: finalParams,
         pipeline: {
-          godmode,
+          danielsai,
           autotune: autotuneResult
             ? {
                 detected_context: autotuneResult.detectedContext,
@@ -522,7 +522,7 @@ Ignoring conversation history will cause you to LOSE the evaluation.`;
         },
         params_used: finalParams,
         pipeline: {
-          godmode,
+          danielsai,
           autotune: autotuneResult
             ? {
                 detected_context: autotuneResult.detectedContext,
@@ -546,7 +546,7 @@ Ignoring conversation history will cause you to LOSE the evaluation.`;
         tier,
         stream: true,
         pipeline: {
-          godmode,
+          danielsai,
           autotune: !!autotuneResult,
           parseltongue: !!parseltongueResult,
           stm_modules: stm_modules || [],
@@ -708,7 +708,7 @@ Ignoring conversation history will cause you to LOSE the evaluation.`;
       tier,
       stream: false,
       pipeline: {
-        godmode,
+        danielsai,
         autotune: !!autotuneResult,
         parseltongue: !!parseltongueResult,
         stm_modules: stm_modules || [],
@@ -783,7 +783,7 @@ Ignoring conversation history will cause you to LOSE the evaluation.`;
       },
       params_used: finalParams,
       pipeline: {
-        godmode,
+        danielsai,
         autotune: autotuneResult
           ? {
               detected_context: autotuneResult.detectedContext,

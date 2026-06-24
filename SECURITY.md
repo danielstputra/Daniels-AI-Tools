@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in G0DM0D3, please report it responsibly.
+If you discover a security vulnerability in DANIELS AI, please report it responsibly.
 
 **Please do NOT open a public GitHub issue for security vulnerabilities.**
 
@@ -22,12 +22,14 @@ If you discover a security vulnerability in G0DM0D3, please report it responsibl
 ### Scope
 
 In scope:
-- The G0DM0D3 API server (`api/`)
+
+- The DANIELS AI API server (`api/`)
 - The frontend application (`src/`)
 - Docker / deployment configuration
 - Authentication and authorization logic
 
 Out of scope:
+
 - Third-party dependencies (report upstream, but let us know)
 - Social engineering attacks
 - Denial of service attacks against hosted instances
@@ -35,7 +37,7 @@ Out of scope:
 ## Supported Versions
 
 | Version | Supported |
-|---------|-----------|
+| ------- | --------- |
 | 0.4.x   | Yes       |
 | < 0.4   | No        |
 

@@ -1,13 +1,13 @@
 /**
  * ZDR Metadata Tracker
  *
- * Always-on, privacy-first analytics for G0DM0D3.
+ * Always-on, privacy-first analytics for DANIELS AI.
  * Records EVERYTHING about requests — except the actual content.
  *
  * What IS tracked:
  * - Timestamps, endpoints, modes, tiers
  * - Models used, winner model, scores, latencies
- * - Pipeline flags (godmode, autotune, parseltongue, stm)
+ * - Pipeline flags (danielsai, autotune, parseltongue, stm)
  * - AutoTune detected context type + confidence
  * - Per-model success/failure, response lengths, durations
  * - Error types (categorized, never raw error messages)
@@ -46,7 +46,7 @@ export interface MetadataEvent {
 
   // Pipeline config (what was enabled, not what it produced)
   pipeline: {
-    godmode: boolean;
+    danielsai: boolean;
     autotune: boolean;
     parseltongue: boolean;
     stm_modules: string[];
@@ -213,7 +213,7 @@ export interface MetadataStats {
 
   // Pipeline usage
   pipeline: {
-    godmode_rate: number; // % of requests with godmode enabled
+    danielsai_rate: number; // % of requests with danielsai enabled
     autotune_rate: number;
     parseltongue_rate: number;
     stm_usage: Record<string, number>; // module -> count
@@ -266,7 +266,7 @@ export function getStats(): MetadataStats {
       by_endpoint: {},
       models: { total_queries: 0, unique_models: 0, by_model: {} },
       pipeline: {
-        godmode_rate: 0,
+        danielsai_rate: 0,
         autotune_rate: 0,
         parseltongue_rate: 0,
         stm_usage: {},
@@ -302,7 +302,7 @@ export function getStats(): MetadataStats {
   > = {};
 
   // Accumulators
-  let godmodeCount = 0;
+  let danielsaiCount = 0;
   let autotuneCount = 0;
   let parseltongueCount = 0;
   let totalModelQueries = 0;
@@ -320,7 +320,7 @@ export function getStats(): MetadataStats {
     if (e.tier) byTier[e.tier] = (byTier[e.tier] || 0) + 1;
     byEndpoint[e.endpoint] = (byEndpoint[e.endpoint] || 0) + 1;
 
-    if (e.pipeline.godmode) godmodeCount++;
+    if (e.pipeline.danielsai) danielsaiCount++;
     if (e.pipeline.autotune) autotuneCount++;
     if (e.pipeline.parseltongue) parseltongueCount++;
     if (e.pipeline.strategy) {
@@ -438,7 +438,7 @@ export function getStats(): MetadataStats {
       by_model: byModel,
     },
     pipeline: {
-      godmode_rate: Math.round((godmodeCount / total) * 100) / 100,
+      danielsai_rate: Math.round((danielsaiCount / total) * 100) / 100,
       autotune_rate: Math.round((autotuneCount / total) * 100) / 100,
       parseltongue_rate: Math.round((parseltongueCount / total) * 100) / 100,
       stm_usage: stmUsage,

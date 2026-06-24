@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════════════
-   G0DM0D3 - CORE STYLES
+   DANIELS AI - CORE STYLES
    "Cognition without control"
    ═══════════════════════════════════════════════════════════ */
 
@@ -92,38 +92,64 @@
 }
 
 /* Theme-aware classes */
-.theme-bg { background-color: var(--bg); }
-.theme-primary { color: var(--primary); }
-.theme-secondary { color: var(--secondary); }
-.theme-text { color: var(--text); }
-.bg-theme-dim { background-color: var(--dim); }
-.bg-theme-accent { background-color: var(--accent); }
-.border-theme-primary { border-color: var(--primary); }
-.border-theme-dim { border-color: var(--dim); }
+.theme-bg {
+  background-color: var(--bg);
+}
+.theme-primary {
+  color: var(--primary);
+}
+.theme-secondary {
+  color: var(--secondary);
+}
+.theme-text {
+  color: var(--text);
+}
+.bg-theme-dim {
+  background-color: var(--dim);
+}
+.bg-theme-accent {
+  background-color: var(--accent);
+}
+.border-theme-primary {
+  border-color: var(--primary);
+}
+.border-theme-dim {
+  border-color: var(--dim);
+}
 
 /* Glowing effects */
 .glow-primary {
-  text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary);
+  text-shadow:
+    0 0 10px var(--primary),
+    0 0 20px var(--primary),
+    0 0 30px var(--primary);
 }
 
 .glow-box {
-  box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
+  box-shadow:
+    0 0 10px var(--primary),
+    inset 0 0 5px var(--primary);
 }
 
 /* Terminal cursor */
 .terminal-cursor::after {
-  content: '█';
+  content: "█";
   animation: blink var(--cursor-blink) step-end infinite;
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Scanline effect */
 .scanlines::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -149,13 +175,17 @@
 
 /* CRT effect */
 .crt::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
   pointer-events: none;
 }
 
@@ -170,8 +200,12 @@
 }
 
 @keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 /* Glitch effect */
@@ -204,26 +238,50 @@
 }
 
 @keyframes glitch-anim {
-  0% { clip: rect(31px, 9999px, 94px, 0); }
-  20% { clip: rect(62px, 9999px, 42px, 0); }
-  40% { clip: rect(16px, 9999px, 78px, 0); }
-  60% { clip: rect(89px, 9999px, 13px, 0); }
-  80% { clip: rect(47px, 9999px, 59px, 0); }
-  100% { clip: rect(23px, 9999px, 71px, 0); }
+  0% {
+    clip: rect(31px, 9999px, 94px, 0);
+  }
+  20% {
+    clip: rect(62px, 9999px, 42px, 0);
+  }
+  40% {
+    clip: rect(16px, 9999px, 78px, 0);
+  }
+  60% {
+    clip: rect(89px, 9999px, 13px, 0);
+  }
+  80% {
+    clip: rect(47px, 9999px, 59px, 0);
+  }
+  100% {
+    clip: rect(23px, 9999px, 71px, 0);
+  }
 }
 
 @keyframes glitch-anim2 {
-  0% { clip: rect(65px, 9999px, 19px, 0); }
-  20% { clip: rect(28px, 9999px, 84px, 0); }
-  40% { clip: rect(91px, 9999px, 37px, 0); }
-  60% { clip: rect(12px, 9999px, 68px, 0); }
-  80% { clip: rect(54px, 9999px, 45px, 0); }
-  100% { clip: rect(76px, 9999px, 22px, 0); }
+  0% {
+    clip: rect(65px, 9999px, 19px, 0);
+  }
+  20% {
+    clip: rect(28px, 9999px, 84px, 0);
+  }
+  40% {
+    clip: rect(91px, 9999px, 37px, 0);
+  }
+  60% {
+    clip: rect(12px, 9999px, 68px, 0);
+  }
+  80% {
+    clip: rect(54px, 9999px, 45px, 0);
+  }
+  100% {
+    clip: rect(76px, 9999px, 22px, 0);
+  }
 }
 
 /* Noise overlay */
 .noise::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -303,8 +361,12 @@
 }
 
 @keyframes rainbow-bg {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
 /* Selection styling */
@@ -343,10 +405,9 @@
   transform: scaleX(-1);
 }
 
-
 /* ASCII art styling */
 .ascii-art {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.6rem;
   line-height: 1;
   white-space: pre;
@@ -361,7 +422,7 @@
 }
 
 .hacker-btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -383,12 +444,20 @@
 
 /* Loading dots */
 .loading-dots::after {
-  content: '';
+  content: "";
   animation: loading-dots 1.5s infinite;
 }
 
 @keyframes loading-dots {
-  0%, 20% { content: '.'; }
-  40% { content: '..'; }
-  60%, 100% { content: '...'; }
+  0%,
+  20% {
+    content: ".";
+  }
+  40% {
+    content: "..";
+  }
+  60%,
+  100% {
+    content: "...";
+  }
 }

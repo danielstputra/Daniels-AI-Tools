@@ -1,4 +1,4 @@
-# G0DM0D3 Frontend — Static build served by nginx
+# DANIELS AI Frontend — Static build served by nginx
 #
 # Stage 1: Build the Next.js static export
 # Stage 2: Serve with nginx + proxy API requests to the backend

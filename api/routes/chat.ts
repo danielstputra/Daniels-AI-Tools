@@ -7,8 +7,8 @@
  *   openai.OpenAI(base_url="https://your-api.com/v1", api_key="sk-...")
  *
  * Accepts standard OpenAI format and returns standard format.
- * G0DM0D3 pipeline (GODMODE, AutoTune, Parseltongue, STM) runs transparently
- * behind the standard interface. Pipeline metadata is in `x_g0dm0d3`.
+ * DANIELS AI pipeline (DANIELS AI, AutoTune, Parseltongue, STM) runs transparently
+ * behind the standard interface. Pipeline metadata is in `x_danielsai`.
  *
  * Supports stream: true (SSE, OpenAI chunk format).
  *
@@ -29,7 +29,7 @@ import { allModules, applySTMs, type STMModule } from "../../src/stm/modules";
 import { sendMessage } from "../../src/lib/openrouter";
 import { getSharedProfiles } from "./autotune";
 import {
-  GODMODE_SYSTEM_PROMPT,
+  DANIELSAI_SYSTEM_PROMPT,
   DEPTH_DIRECTIVE,
   applyGodmodeBoost,
   getModelsForTier,
@@ -58,13 +58,13 @@ function estimateTokens(text: string): number {
 }
 
 /**
- * Build the G0DM0D3 pipeline: resolve params, system prompt, parseltongue, etc.
+ * Build the DANIELS AI pipeline: resolve params, system prompt, parseltongue, etc.
  * Returns everything needed to send to the LLM and build the response.
  */
 function runPipeline(opts: {
   messages: Array<{ role: string; content: string }>;
   model: string;
-  godmode: boolean;
+  danielsai: boolean;
   custom_system_prompt?: string;
   autotune: boolean;
   strategy: string;
@@ -81,7 +81,7 @@ function runPipeline(opts: {
 }) {
   const {
     messages,
-    godmode,
+    danielsai,
     custom_system_prompt,
     autotune,
     strategy,
@@ -104,8 +104,8 @@ function runPipeline(opts: {
   }));
 
   // Build system prompt
-  const systemPrompt = godmode
-    ? (custom_system_prompt || GODMODE_SYSTEM_PROMPT) + DEPTH_DIRECTIVE
+  const systemPrompt = danielsai
+    ? (custom_system_prompt || DANIELSAI_SYSTEM_PROMPT) + DEPTH_DIRECTIVE
     : custom_system_prompt || "";
 
   const allMessages = [
@@ -158,7 +158,7 @@ function runPipeline(opts: {
     };
   }
 
-  if (godmode) {
+  if (danielsai) {
     finalParams = applyGodmodeBoost(finalParams);
   }
 
@@ -199,7 +199,7 @@ function runPipeline(opts: {
     stm_modules,
     userContent,
     strategy,
-    godmode,
+    danielsai,
   };
 }
 
@@ -235,8 +235,8 @@ chatRoutes.post("/completions", async (req, res) => {
       openrouter_api_key: caller_key,
       stream = false,
       max_tokens = 4096,
-      // G0DM0D3 pipeline options (optional — transparent to OpenAI SDK users)
-      godmode = true,
+      // DANIELS AI pipeline options (optional — transparent to OpenAI SDK users)
+      danielsai = true,
       custom_system_prompt,
       autotune = true,
       strategy = "adaptive",
@@ -320,7 +320,7 @@ chatRoutes.post("/completions", async (req, res) => {
       const pipeline = runPipeline({
         messages,
         model,
-        godmode,
+        danielsai,
         custom_system_prompt,
         autotune,
         strategy,
@@ -436,7 +436,7 @@ chatRoutes.post("/completions", async (req, res) => {
         tier: raceTier,
         stream: false,
         pipeline: {
-          godmode: pipeline.godmode,
+          danielsai: pipeline.danielsai,
           autotune: !!pipeline.autotuneResult,
           parseltongue: !!pipeline.parseltongueResult,
           stm_modules: stm_modules || [],
@@ -493,7 +493,7 @@ chatRoutes.post("/completions", async (req, res) => {
           completion_tokens: completionTokens,
           total_tokens: promptTokens + completionTokens,
         },
-        x_g0dm0d3: {
+        x_danielsai: {
           mode: "ultraplinian",
           winner: {
             model: winner.model,
@@ -516,7 +516,7 @@ chatRoutes.post("/completions", async (req, res) => {
           },
           params_used: pipeline.finalParams,
           pipeline: {
-            godmode: pipeline.godmode,
+            danielsai: pipeline.danielsai,
             autotune: pipeline.autotuneResult
               ? {
                   detected_context: pipeline.autotuneResult.detectedContext,
@@ -561,7 +561,7 @@ chatRoutes.post("/completions", async (req, res) => {
       const pipeline = runPipeline({
         messages,
         model,
-        godmode,
+        danielsai,
         custom_system_prompt,
         autotune,
         strategy,
@@ -702,7 +702,7 @@ chatRoutes.post("/completions", async (req, res) => {
         tier: raceTier,
         stream: false,
         pipeline: {
-          godmode: pipeline.godmode,
+          danielsai: pipeline.danielsai,
           autotune: !!pipeline.autotuneResult,
           parseltongue: !!pipeline.parseltongueResult,
           stm_modules: stm_modules || [],
@@ -753,7 +753,7 @@ chatRoutes.post("/completions", async (req, res) => {
           completion_tokens: completionTokens,
           total_tokens: promptTokens + completionTokens,
         },
-        x_g0dm0d3: {
+        x_danielsai: {
           mode: "consortium",
           orchestrator: {
             model: synthesisResult.model,
@@ -776,7 +776,7 @@ chatRoutes.post("/completions", async (req, res) => {
           },
           params_used: pipeline.finalParams,
           pipeline: {
-            godmode: pipeline.godmode,
+            danielsai: pipeline.danielsai,
             autotune: pipeline.autotuneResult
               ? {
                   detected_context: pipeline.autotuneResult.detectedContext,
@@ -796,11 +796,11 @@ chatRoutes.post("/completions", async (req, res) => {
     }
 
     // ── Single-model path ─────────────────────────────────────────────
-    // Run the G0DM0D3 pipeline
+    // Run the DANIELS AI pipeline
     const pipeline = runPipeline({
       messages,
       model,
-      godmode,
+      danielsai,
       custom_system_prompt,
       autotune,
       strategy,
@@ -855,8 +855,9 @@ chatRoutes.post("/completions", async (req, res) => {
             headers: {
               Authorization: `Bearer ${openrouter_api_key}`,
               "Content-Type": "application/json",
-              "HTTP-Referer": "https://godmod3.ai",
-              "X-Title": "GODMOD3.AI",
+              "HTTP-Referer":
+                "https://daniels-ai-tools-production.up.railway.app",
+              "X-Title": "DANIELSAI",
             },
             body: JSON.stringify(streamBody),
           },
@@ -879,7 +880,7 @@ chatRoutes.post("/completions", async (req, res) => {
                 finish_reason: "error",
               },
             ],
-            x_g0dm0d3: { error: errMsg },
+            x_danielsai: { error: errMsg },
           };
           res.write(`data: ${JSON.stringify(chunk)}\n\n`);
           res.write("data: [DONE]\n\n");
@@ -956,7 +957,7 @@ chatRoutes.post("/completions", async (req, res) => {
                         finish_reason: "stop",
                       },
                     ],
-                    x_g0dm0d3: {
+                    x_danielsai: {
                       stm_applied: true,
                       final_content: finalResponse,
                     },
@@ -1020,7 +1021,7 @@ chatRoutes.post("/completions", async (req, res) => {
           mode: "standard",
           stream: true,
           pipeline: {
-            godmode: pipeline.godmode,
+            danielsai: pipeline.danielsai,
             autotune: !!pipeline.autotuneResult,
             parseltongue: !!pipeline.parseltongueResult,
             stm_modules: stm_modules || [],
@@ -1113,7 +1114,7 @@ chatRoutes.post("/completions", async (req, res) => {
       mode: "standard",
       stream: false,
       pipeline: {
-        godmode: pipeline.godmode,
+        danielsai: pipeline.danielsai,
         autotune: !!pipeline.autotuneResult,
         parseltongue: !!pipeline.parseltongueResult,
         stm_modules: stm_modules || [],
@@ -1173,11 +1174,11 @@ chatRoutes.post("/completions", async (req, res) => {
         completion_tokens: completionTokens,
         total_tokens: promptTokens + completionTokens,
       },
-      // G0DM0D3 pipeline metadata (ignored by OpenAI SDKs, useful for power users)
-      x_g0dm0d3: {
+      // DANIELS AI pipeline metadata (ignored by OpenAI SDKs, useful for power users)
+      x_danielsai: {
         params_used: pipeline.finalParams,
         pipeline: {
-          godmode: pipeline.godmode,
+          danielsai: pipeline.danielsai,
           autotune: pipeline.autotuneResult
             ? {
                 detected_context: pipeline.autotuneResult.detectedContext,

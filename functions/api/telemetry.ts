@@ -1,5 +1,5 @@
 /**
- * G0DM0D3 Telemetry Proxy — Cloudflare Pages Function
+ * DANIELS AI Telemetry Proxy — Cloudflare Pages Function
  *
  * Receives metadata events from the frontend and commits them
  * to a HuggingFace Dataset repo as JSONL. The HF token lives
@@ -10,7 +10,7 @@
  *
  * Setup (Cloudflare Pages Dashboard → Settings → Environment Variables):
  *   HF_TOKEN         — HuggingFace write token (hf_...)
- *   HF_DATASET_REPO  — Target dataset repo (e.g. "pliny-the-prompter/g0dm0d3")
+ *   HF_DATASET_REPO  — Target dataset repo (e.g. "pliny-the-prompter/danielsai")
  *
  * The frontend batches events and sends them here periodically.
  * Each batch becomes a single JSONL file committed to the HF repo.
@@ -339,7 +339,7 @@ const ALLOWED_FIELDS = new Set<string>([
   // Pipeline sub-fields (when flattened)
   "stm_modules",
   "strategy",
-  "godmode",
+  "danielsai",
   "auto_retry",
   "improve_mode",
   "liquid_mode",
@@ -368,7 +368,7 @@ const ALLOWED_FIELDS = new Set<string>([
   "encoding_rounds",
   "liquid_upgrades",
 
-  // GODMODE FAST fields
+  // DANIELS AI FAST fields
   "combo",
   "stream",
   "fast_stream", // nested: {model, success, content_length}

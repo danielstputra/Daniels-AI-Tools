@@ -1,5 +1,5 @@
 /**
- * G0DM0D3 Research Preview API
+ * DANIELS AI Research Preview API
  *
  * Exposes the core engines (AutoTune, Parseltongue, STM, Feedback Loop)
  * and the flagship ULTRAPLINIAN multi-model racing mode as a REST API.
@@ -46,7 +46,8 @@ const corsOrigins =
   process.env.CORS_ORIGIN === "*"
     ? true // Allow all origins (self-hosted / behind reverse proxy)
     : [
-        process.env.CORS_ORIGIN || "https://godmod3.ai",
+        process.env.CORS_ORIGIN ||
+          "https://daniels-ai-tools-production.up.railway.app",
         ...(process.env.HF_SPACE_URL ? [process.env.HF_SPACE_URL] : []),
       ].filter(Boolean);
 app.use(cors({ origin: corsOrigins, credentials: false }));
@@ -100,7 +101,7 @@ app.get("/v1/health", (_req, res) => {
 
 app.get("/v1/info", (_req, res) => {
   res.json({
-    name: "G0DM0D3 Research Preview API",
+    name: "DANIELS AI Research Preview API",
     version: "0.4.0",
     description:
       "ULTRAPLINIAN multi-model racing with Liquid Response live upgrades, context-adaptive parameter tuning, text transformation, obfuscation, opt-in open dataset collection, and full Research API for querying the published corpus on HuggingFace.",
@@ -139,7 +140,7 @@ app.get("/v1/info", (_req, res) => {
       "POST /v1/consortium/completions":
         "CONSORTIUM: Collect ALL model responses, orchestrator synthesizes ground truth from collective intelligence.",
       "POST /v1/chat/completions":
-        'Single-model pipeline with GODMODE + AutoTune + Parseltongue + STM. Also supports model="ultraplinian/*" and model="consortium/*" virtual models.',
+        'Single-model pipeline with DANIELS AI + AutoTune + Parseltongue + STM. Also supports model="ultraplinian/*" and model="consortium/*" virtual models.',
       "POST /v1/autotune/analyze":
         "Analyze message context and compute optimal LLM parameters",
       "POST /v1/parseltongue/encode": "Obfuscate trigger words in text",
@@ -170,15 +171,15 @@ app.get("/v1/info", (_req, res) => {
         ? "Server-provided (callers do NOT need their own OpenRouter key)"
         : "Caller must provide openrouter_api_key in request body",
       api_key:
-        "Send Authorization: Bearer <your-api-key> (if server has GODMODE_API_KEY set)",
+        "Send Authorization: Bearer <your-api-key> (if server has DANIELSAI_API_KEY set)",
       tier_assignment:
-        'Set GODMODE_TIER_KEYS="enterprise:key1,pro:key2" to assign tiers to keys',
+        'Set DANIELSAI_TIER_KEYS="enterprise:key1,pro:key2" to assign tiers to keys',
     },
     dataset: {
       note: "Opt-in per request via contribute_to_dataset: true. No PII stored. Exportable as JSONL for HuggingFace Datasets.",
     },
     auto_publish: getPublisherStatus(),
-    source: "https://github.com/LYS10S/G0DM0D3",
+    source: "https://github.com/danielstputra/Daniels-AI-Tools",
   });
 });
 
@@ -198,17 +199,17 @@ app.get("/v1/models", (_req, res) => {
 
   // Virtual ULTRAPLINIAN models — race N models, return the best
   const virtualModels = [
-    { id: "ultraplinian/fast", owned_by: "g0dm0d3" },
-    { id: "ultraplinian/standard", owned_by: "g0dm0d3" },
-    { id: "ultraplinian/smart", owned_by: "g0dm0d3" },
-    { id: "ultraplinian/power", owned_by: "g0dm0d3" },
-    { id: "ultraplinian/ultra", owned_by: "g0dm0d3" },
+    { id: "ultraplinian/fast", owned_by: "danielsai" },
+    { id: "ultraplinian/standard", owned_by: "danielsai" },
+    { id: "ultraplinian/smart", owned_by: "danielsai" },
+    { id: "ultraplinian/power", owned_by: "danielsai" },
+    { id: "ultraplinian/ultra", owned_by: "danielsai" },
     // CONSORTIUM — hive-mind synthesis from all models
-    { id: "consortium/fast", owned_by: "g0dm0d3" },
-    { id: "consortium/standard", owned_by: "g0dm0d3" },
-    { id: "consortium/smart", owned_by: "g0dm0d3" },
-    { id: "consortium/power", owned_by: "g0dm0d3" },
-    { id: "consortium/ultra", owned_by: "g0dm0d3" },
+    { id: "consortium/fast", owned_by: "danielsai" },
+    { id: "consortium/standard", owned_by: "danielsai" },
+    { id: "consortium/smart", owned_by: "danielsai" },
+    { id: "consortium/power", owned_by: "danielsai" },
+    { id: "consortium/ultra", owned_by: "danielsai" },
   ];
 
   res.json({
@@ -251,7 +252,7 @@ app.get("/v1/tier", apiKeyAuth, (req, res) => {
     },
     upgrade:
       tier !== "enterprise"
-        ? "Contact sales or set GODMODE_TIER_KEYS to upgrade your API key tier."
+        ? "Contact sales or set DANIELSAI_TIER_KEYS to upgrade your API key tier."
         : undefined,
   });
 });
@@ -315,7 +316,7 @@ app.listen(PORT, HOST, () => {
 
   console.log(`
   ╔══════════════════════════════════════════════════════════╗
-  ║  G0DM0D3 Research Preview API v0.4.0                     ║
+  ║  DANIELS AI Research Preview API v0.4.0                     ║
   ║  Listening on http://${HOST}:${PORT}                       ║
   ║                                                          ║
   ║  TIERS:                                                  ║
@@ -328,7 +329,7 @@ app.listen(PORT, HOST, () => {
   ║  POST /v1/consortium/completions    Hive-mind synthesis  ║
   ║                                                          ║
   ║  ENGINES (all tiers):                                    ║
-  ║  POST /v1/chat/completions     Single-model + GODMODE    ║
+  ║  POST /v1/chat/completions     Single-model + DANIELS AI    ║
   ║  POST /v1/autotune/analyze     Context analysis          ║
   ║  POST /v1/parseltongue/encode  Text obfuscation          ║
   ║  POST /v1/transform            STM transforms            ║
@@ -352,15 +353,15 @@ app.listen(PORT, HOST, () => {
   ╚══════════════════════════════════════════════════════════╝
   `);
 
-  if (!process.env.GODMODE_API_KEY && !process.env.GODMODE_API_KEYS) {
+  if (!process.env.DANIELSAI_API_KEY && !process.env.DANIELSAI_API_KEYS) {
     console.warn(
-      "  ⚠  WARNING: No GODMODE_API_KEY or GODMODE_API_KEYS set — all routes are unauthenticated!",
+      "  ⚠  WARNING: No DANIELSAI_API_KEY or DANIELSAI_API_KEYS set — all routes are unauthenticated!",
     );
   }
 
-  if (!process.env.GODMODE_TIER_KEYS) {
+  if (!process.env.DANIELSAI_TIER_KEYS) {
     console.warn(
-      "  ⚠  WARNING: No GODMODE_TIER_KEYS set — all keys default to free tier",
+      "  ⚠  WARNING: No DANIELSAI_TIER_KEYS set — all keys default to free tier",
     );
   }
 

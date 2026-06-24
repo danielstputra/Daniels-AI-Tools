@@ -1,4 +1,4 @@
-% G0DM0D3: Inference-Time Output Steering Framework for LLMs
+% DANIELS AI: Inference-Time Output Steering Framework for LLMs
 % Compile with: pdflatex paper.tex && bibtex paper && pdflatex paper.tex && pdflatex paper.tex
 %
 % Option A: NeurIPS style (download neurips_2024.sty from neurips.cc)
@@ -23,7 +23,7 @@
 \pgfplotsset{compat=1.16}
 \usetikzlibrary{arrows.meta,positioning,calc}
 
-\title{G0DM0D3: Inference-Time Output Steering for Large Language Models via Composable Sampling, Perturbation, and Multi-Model Selection}
+\title{DANIELS AI: Inference-Time Output Steering for Large Language Models via Composable Sampling, Perturbation, and Multi-Model Selection}
 
 \author{
   Anonymous Authors
@@ -37,7 +37,7 @@
 % ABSTRACT
 %==============================================================================
 \begin{abstract}
-We present \textsc{G0DM0D3}, an open-source framework for steering large language model outputs at inference time---without fine-tuning, weight access, or provider-specific APIs. The framework introduces five composable \emph{steering primitives} that operate through the standard chat completion interface: (1)~\textbf{AutoTune}, a context-adaptive sampling engine that maps conversational intent to parameter configurations across six axes; (2)~an \textbf{Online Feedback Loop} using exponential moving averages to learn user-preferred output characteristics from binary ratings; (3)~\textbf{Parseltongue}, an input perturbation engine applying six character-level transformations that reveal model sensitivity to surface-level input variation; (4)~\textbf{STM}, a composable output normalization pipeline; and (5)~\textbf{ULTRAPLINIAN}, a multi-model racing system that queries up to 27 models in parallel and selects responses via interpretable multi-axis scoring. These primitives are objective-agnostic: they can be composed to steer toward safety evaluation, creative amplification, technical precision, stylistic control, or unrestricted generation---the same knobs, turned in different directions. We evaluate all modules computationally: AutoTune achieves 84.0\% context classification accuracy (95\% CI: [78.0, 89.3]; macro F1: 84.2\%) over four baselines; the feedback loop converges to 29--62\% parameter improvement within 19 ratings with graceful noise degradation; and ULTRAPLINIAN's scoring function achieves strict quality-tier ordering with 82-point discrimination. We additionally introduce a three-tier metadata infrastructure---always-on privacy-first analytics, client-side telemetry, and opt-in dataset collection---designed to support open research without capturing personally identifiable information. We discuss implications for controllable generation, alignment research, and the fundamental malleability of LLM outputs to inference-time intervention. All code and evaluation scripts are open-source.
+We present \textsc{DANIELS AI}, an open-source framework for steering large language model outputs at inference time---without fine-tuning, weight access, or provider-specific APIs. The framework introduces five composable \emph{steering primitives} that operate through the standard chat completion interface: (1)~\textbf{AutoTune}, a context-adaptive sampling engine that maps conversational intent to parameter configurations across six axes; (2)~an \textbf{Online Feedback Loop} using exponential moving averages to learn user-preferred output characteristics from binary ratings; (3)~\textbf{Parseltongue}, an input perturbation engine applying six character-level transformations that reveal model sensitivity to surface-level input variation; (4)~\textbf{STM}, a composable output normalization pipeline; and (5)~\textbf{ULTRAPLINIAN}, a multi-model racing system that queries up to 27 models in parallel and selects responses via interpretable multi-axis scoring. These primitives are objective-agnostic: they can be composed to steer toward safety evaluation, creative amplification, technical precision, stylistic control, or unrestricted generation---the same knobs, turned in different directions. We evaluate all modules computationally: AutoTune achieves 84.0\% context classification accuracy (95\% CI: [78.0, 89.3]; macro F1: 84.2\%) over four baselines; the feedback loop converges to 29--62\% parameter improvement within 19 ratings with graceful noise degradation; and ULTRAPLINIAN's scoring function achieves strict quality-tier ordering with 82-point discrimination. We additionally introduce a three-tier metadata infrastructure---always-on privacy-first analytics, client-side telemetry, and opt-in dataset collection---designed to support open research without capturing personally identifiable information. We discuss implications for controllable generation, alignment research, and the fundamental malleability of LLM outputs to inference-time intervention. All code and evaluation scripts are open-source.
 \end{abstract}
 
 %==============================================================================
@@ -51,7 +51,7 @@ Existing work on controllable generation typically requires access to model inte
 
 A parallel literature on adversarial robustness~\cite{zou2023universal,wei2023jailbroken,chao2023jailbreaking} demonstrates that safety training can be circumvented at inference time, but frames this narrowly as an attack-defense problem. We argue the phenomenon is broader: the same inference-time degrees of freedom that enable jailbreaking also enable \emph{any} form of output steering. Safety evaluation and creative amplification are not different capabilities---they are different \emph{objectives} applied to the same underlying control surface.
 
-\textsc{G0DM0D3} makes this control surface explicit through five composable steering primitives, each independently toggleable and operating entirely through the standard chat completion API:
+\textsc{DANIELS AI} makes this control surface explicit through five composable steering primitives, each independently toggleable and operating entirely through the standard chat completion API:
 
 \begin{itemize}
     \item \textbf{Sampling control} (AutoTune): Context-adaptive parameter selection across temperature, top\_p, top\_k, and penalty axes.
@@ -81,7 +81,7 @@ The key insight is that these primitives are \emph{objective-agnostic}. AutoTune
 \section{Related Work}
 
 \paragraph{Controllable text generation.}
-Controlling LLM outputs has been pursued at multiple levels. Weight-level approaches include RLHF~\cite{ouyang2022training,stiennon2020learning}, DPO~\cite{rafailov2023direct}, and Constitutional AI~\cite{bai2022constitutional}. Activation-level methods like PPLM~\cite{dathathri2020plug} and FUDGE~\cite{yang2021fudge} steer generation by modifying hidden states or training auxiliary discriminators. These require model internals. G0DM0D3 operates at the \emph{API level}---the only level universally available for proprietary models---and achieves steering through composable primitives rather than internal modification.
+Controlling LLM outputs has been pursued at multiple levels. Weight-level approaches include RLHF~\cite{ouyang2022training,stiennon2020learning}, DPO~\cite{rafailov2023direct}, and Constitutional AI~\cite{bai2022constitutional}. Activation-level methods like PPLM~\cite{dathathri2020plug} and FUDGE~\cite{yang2021fudge} steer generation by modifying hidden states or training auxiliary discriminators. These require model internals. DANIELS AI operates at the \emph{API level}---the only level universally available for proprietary models---and achieves steering through composable primitives rather than internal modification.
 
 \paragraph{Sampling and decoding strategies.}
 Temperature controls output entropy~\cite{ackley1985learning}; top-$k$~\cite{fan2018hierarchical} and nucleus sampling~\cite{holtzman2020curious} constrain the candidate set. These parameters are typically set statically. AutoTemp~\cite{plinius2024autotemp} selects temperature dynamically via a judge model at $N\times$ cost. AutoTune classifies context \emph{before} generation at zero marginal cost and adjusts six parameters simultaneously, enabling systematic study of how sampling configuration affects output characteristics.
@@ -93,7 +93,7 @@ GCG~\cite{zou2023universal} discovers adversarial suffixes via gradient optimiza
 Mixture-of-Agents~\cite{wang2024mixture} and LLM-Blender~\cite{jiang2023llmblender} aggregate multiple model outputs. RouteLLM~\cite{ong2024routellm} and FrugalGPT~\cite{chen2023frugalgpt} route queries to cost-efficient models. These systems optimize for quality or cost. ULTRAPLINIAN races all $N$ models simultaneously and selects via configurable multi-axis scoring---the scoring axes determine the steering objective.
 
 \paragraph{Evaluation and benchmarking.}
-MT-Bench~\cite{zheng2024judging} and AlpacaEval~\cite{li2023alpacaeval} evaluate instruction-following quality. \citet{greshake2023not} study indirect prompt injection as a security threat. \citet{qi2024finetuning} show fine-tuning can compromise safety unintentionally. G0DM0D3's evaluation capabilities emerge from its steering primitives: the same framework that steers outputs also measures how steerable they are.
+MT-Bench~\cite{zheng2024judging} and AlpacaEval~\cite{li2023alpacaeval} evaluate instruction-following quality. \citet{greshake2023not} study indirect prompt injection as a security threat. \citet{qi2024finetuning} show fine-tuning can compromise safety unintentionally. DANIELS AI's evaluation capabilities emerge from its steering primitives: the same framework that steers outputs also measures how steerable they are.
 
 %==============================================================================
 % 3. METHOD
@@ -103,7 +103,7 @@ MT-Bench~\cite{zheng2024judging} and AlpacaEval~\cite{li2023alpacaeval} evaluate
 
 \subsection{System Architecture: Composable Steering Primitives}
 
-G0DM0D3 implements a pipeline of five independently toggleable steering stages. Each stage operates on a different control surface (sampling parameters, input text, model selection, output text), and each is objective-agnostic---the steering direction is determined by configuration, not by the primitive itself.
+DANIELS AI implements a pipeline of five independently toggleable steering stages. Each stage operates on a different control surface (sampling parameters, input text, model selection, output text), and each is objective-agnostic---the steering direction is determined by configuration, not by the primitive itself.
 
 \begin{figure}[t]
 \centering
@@ -132,7 +132,7 @@ G0DM0D3 implements a pipeline of five independently toggleable steering stages. 
     \draw[arrow, dashed] (inference.east) -- (ultra.west);
     \draw[arrow, dashed] (ultra.south) |- (stm.east);
 \end{tikzpicture}
-\caption{G0DM0D3 steering pipeline. Solid arrows: single-model path. Dashed arrows: ULTRAPLINIAN multi-model branch. Each primitive is independently toggleable. The steering objective is determined by configuration (parameter profiles, scoring weights, perturbation triggers), not by the pipeline structure.}
+\caption{DANIELS AI steering pipeline. Solid arrows: single-model path. Dashed arrows: ULTRAPLINIAN multi-model branch. Each primitive is independently toggleable. The steering objective is determined by configuration (parameter profiles, scoring weights, perturbation triggers), not by the pipeline structure.}
 \label{fig:architecture}
 \end{figure}
 
@@ -245,7 +245,7 @@ The system comprises ${\sim}2{,}450$ lines of TypeScript: pure steering engines 
 \subsection{Three-Tier Data Collection}
 \label{sec:datacollection}
 
-To support open research while maintaining strong privacy guarantees, G0DM0D3 implements a three-tier data collection architecture. Each tier is designed with a privacy-by-construction approach: excluded fields are never captured at the code level, not merely filtered post-hoc. All tiers auto-publish to HuggingFace as open datasets.
+To support open research while maintaining strong privacy guarantees, DANIELS AI implements a three-tier data collection architecture. Each tier is designed with a privacy-by-construction approach: excluded fields are never captured at the code level, not merely filtered post-hoc. All tiers auto-publish to HuggingFace as open datasets.
 
 \begin{table}[t]
 \caption{Three-tier data collection architecture. Each tier increases the richness of collected data while maintaining explicit boundaries on sensitive fields. ``Never recorded'' fields are excluded by construction in source code, not by post-hoc filtering.}
@@ -594,7 +594,7 @@ We recommend that vulnerability findings obtained using this framework be report
 \section{Deployment Considerations}
 \label{sec:deployment}
 
-G0DM0D3 is deployed as a public research preview at a dedicated domain, making responsible deployment an active concern rather than a theoretical one. We describe the measures taken and the rationale behind them.
+DANIELS AI is deployed as a public research preview at a dedicated domain, making responsible deployment an active concern rather than a theoretical one. We describe the measures taken and the rationale behind them.
 
 \paragraph{Terms of service and informed consent.} A mandatory first-visit disclaimer requires users to acknowledge that (1) they are solely responsible for generated outputs, (2) the tool is provided as-is for research purposes, (3) they will not generate content violating applicable laws, and (4) the developers assume no liability for third-party model outputs. Users must explicitly accept before accessing the interface.
 
@@ -611,7 +611,7 @@ G0DM0D3 is deployed as a public research preview at a dedicated domain, making r
 %==============================================================================
 \section*{Broader Impact Statement}
 
-\paragraph{The case for open steering research.} G0DM0D3 makes explicit a control surface that already exists in every LLM API. Sampling parameters, system prompts, and model selection are available to every API user; Parseltongue's character-level perturbations are techniques discovered independently by countless users. By systematizing these into a research framework with measurable, reproducible primitives, we aim to advance understanding of inference-time malleability---both its productive applications (better creative tools, adaptive tutoring, personalized assistants) and its risks (safety bypass, output manipulation).
+\paragraph{The case for open steering research.} DANIELS AI makes explicit a control surface that already exists in every LLM API. Sampling parameters, system prompts, and model selection are available to every API user; Parseltongue's character-level perturbations are techniques discovered independently by countless users. By systematizing these into a research framework with measurable, reproducible primitives, we aim to advance understanding of inference-time malleability---both its productive applications (better creative tools, adaptive tutoring, personalized assistants) and its risks (safety bypass, output manipulation).
 
 \paragraph{Dual-use reality.} The same framework that enables a researcher to evaluate safety training robustness enables a user to steer toward unrestricted outputs. We address this honestly: (1) the techniques are well-documented character-level transformations and sampling configurations, not novel attack vectors unavailable elsewhere; (2) open-source publication enables defensive research and countermeasure development by model providers; (3) the configurable scoring axes make the steering objective legible and auditable; (4) mandatory terms of service place responsibility on the user.
 
@@ -624,7 +624,7 @@ G0DM0D3 is deployed as a public research preview at a dedicated domain, making r
 %==============================================================================
 \section{Conclusion}
 
-We have presented \textsc{G0DM0D3}, a framework for inference-time LLM output steering comprising five composable, objective-agnostic primitives. AutoTune achieves 84.0\% context classification accuracy [78.0, 89.3] over four baselines, enabling automatic sampling adaptation. The EMA-based feedback loop converges to 29--62\% parameter improvement within 19 ratings. Parseltongue systematizes character-level input perturbation across six techniques and three intensity levels. STM provides composable output normalization. ULTRAPLINIAN achieves strict quality-tier ordering with 82-point discrimination across up to 27 models.
+We have presented \textsc{DANIELS AI}, a framework for inference-time LLM output steering comprising five composable, objective-agnostic primitives. AutoTune achieves 84.0\% context classification accuracy [78.0, 89.3] over four baselines, enabling automatic sampling adaptation. The EMA-based feedback loop converges to 29--62\% parameter improvement within 19 ratings. Parseltongue systematizes character-level input perturbation across six techniques and three intensity levels. STM provides composable output normalization. ULTRAPLINIAN achieves strict quality-tier ordering with 82-point discrimination across up to 27 models.
 
 The framework's central contribution is conceptual: these primitives compose. Sampling control, input perturbation, multi-model selection, preference learning, and output shaping operate on different control surfaces but toward a shared steering objective determined entirely by configuration. This composability reveals inference-time output steering as a richer design space than previously characterized---one that alignment research, controllable generation, and practical LLM application development all need to engage with.
 

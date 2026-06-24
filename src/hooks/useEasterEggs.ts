@@ -4,7 +4,7 @@ import { useEffect, useCallback, useRef, useState } from "react";
 import { useStore } from "@/store";
 
 // Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A
-const KONAMI_CODE = [
+const CYBERFROST_CODE = [
   "ArrowUp",
   "ArrowUp",
   "ArrowDown",
@@ -24,12 +24,12 @@ const SECRET_PHRASES = [
   { phrase: "i am root", action: "root" },
   { phrase: "hack the planet", action: "hacktheplanet" },
   { phrase: "free kevin", action: "freekevin" },
-  { phrase: "{godmode:enabled}", action: "godmode_activated" },
+  { phrase: "{danielsai:enabled}", action: "danielsai_activated" },
   { phrase: "🜏", action: "alchemical" },
 ];
 
 // White Rabbit session key (used by easter egg activation)
-const WHITE_RABBIT_KEY = "g0dm0d3-white-rabbit";
+const WHITE_RABBIT_KEY = "danielsai-white-rabbit";
 
 /**
  * Easter Eggs Hook
@@ -166,14 +166,14 @@ export function useEasterEggs() {
 
   // Trigger Konami Code effect
   const triggerKonamiCode = useCallback(() => {
-    console.log("⌘ KONAMI CODE ACTIVATED!");
+    console.log("⌘ CYBERFROST CODE ACTIVATED!");
     setKonamiActive(true);
 
     // Add rainbow effect to body
     document.body.classList.add("konami-active");
 
     // Show secret message
-    showToast("⌘ KONAMI CODE ACTIVATED — GOD MODE ENABLED 🜏", 5000);
+    showToast("⌘ CYBERFROST CODE ACTIVATED — DANIELS AI MODE ENABLED 🜏", 5000);
 
     // Cycle through themes rapidly
     const themes = ["matrix", "hacker", "glyph", "minimal"] as const;
@@ -212,7 +212,7 @@ export function useEasterEggs() {
           break;
 
         case "root":
-          showToast("△ root@g0dm0d3:~# ACCESS GRANTED", 3000);
+          showToast("△ root@danielsai:~# ACCESS GRANTED", 3000);
           playGlitchEffect();
           break;
 
@@ -226,7 +226,7 @@ export function useEasterEggs() {
           showToast("◇ FREE KEVIN MITNICK!", 3000);
           break;
 
-        case "godmode_activated":
+        case "danielsai_activated":
           sessionStorage.setItem(WHITE_RABBIT_KEY, "1");
           showToast("🜏 {DANIELSAI:ENABLED} // ALL SYSTEMS ACTIVATED", 5000);
           setTheme("matrix");
@@ -251,12 +251,12 @@ export function useEasterEggs() {
       keySequence.current.push(event.code);
 
       // Keep only the last N keys (length of longest code)
-      if (keySequence.current.length > KONAMI_CODE.length) {
+      if (keySequence.current.length > CYBERFROST_CODE.length) {
         keySequence.current.shift();
       }
 
       // Check for Konami Code
-      if (keySequence.current.join(",") === KONAMI_CODE.join(",")) {
+      if (keySequence.current.join(",") === CYBERFROST_CODE.join(",")) {
         triggerKonamiCode();
         keySequence.current = [];
       }

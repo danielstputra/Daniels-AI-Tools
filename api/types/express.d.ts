@@ -1,5 +1,5 @@
 /**
- * Extend Express Request with G0DM0D3 middleware properties.
+ * Extend Express Request with DANIELS AI middleware properties.
  * Eliminates unsafe `(req as any)` casts throughout the codebase.
  */
 

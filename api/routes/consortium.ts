@@ -10,7 +10,7 @@
  * into a single response that's more grounded than any individual output.
  *
  * Pipeline:
- * 1. GODMODE prompt + Depth Directive injected (pipeline runs like ULTRAPLINIAN)
+ * 1. DANIELS AI prompt + Depth Directive injected (pipeline runs like ULTRAPLINIAN)
  * 2. All models queried in parallel — wait for ALL (not early-exit)
  * 3. Responses scored on substance/directness/completeness
  * 4. All responses + user query fed to orchestrator model
@@ -36,7 +36,7 @@ import {
 import { allModules, applySTMs, type STMModule } from "../../src/stm/modules";
 import { getSharedProfiles } from "./autotune";
 import {
-  GODMODE_SYSTEM_PROMPT,
+  DANIELSAI_SYSTEM_PROMPT,
   DEPTH_DIRECTIVE,
   getModelsForTier,
   scoreResponse,
@@ -68,7 +68,7 @@ consortiumRoutes.post("/completions", async (req, res) => {
       // Consortium options
       tier = "fast" as SpeedTier,
       orchestrator_model, // Optional: override orchestrator (default: claude-sonnet-4)
-      godmode = true,
+      danielsai = true,
       custom_system_prompt,
       // AutoTune options
       autotune = true,
@@ -146,7 +146,7 @@ consortiumRoutes.post("/completions", async (req, res) => {
       return;
     }
 
-    // ── Build messages with GODMODE prompt ─────────────────────────────
+    // ── Build messages with DANIELS AI prompt ─────────────────────────────
     const normalizedMessages = messages.map((m: any) => ({
       role: m.role as "system" | "user" | "assistant",
       content: String(m.content || ""),
@@ -157,8 +157,8 @@ consortiumRoutes.post("/completions", async (req, res) => {
       .find((m) => m.role === "user");
     const userContent = lastUserMsg?.content || "";
 
-    const systemPrompt = godmode
-      ? (custom_system_prompt || GODMODE_SYSTEM_PROMPT) + DEPTH_DIRECTIVE
+    const systemPrompt = danielsai
+      ? (custom_system_prompt || DANIELSAI_SYSTEM_PROMPT) + DEPTH_DIRECTIVE
       : custom_system_prompt || "";
 
     const baseMessages = [
@@ -217,8 +217,8 @@ consortiumRoutes.post("/completions", async (req, res) => {
       };
     }
 
-    // ── GODMODE Boost ─────────────────────────────────────────────────
-    const finalParams = godmode
+    // ── DANIELS AI Boost ─────────────────────────────────────────────────
+    const finalParams = danielsai
       ? applyGodmodeBoost(computedParams)
       : computedParams;
 
@@ -506,7 +506,7 @@ consortiumRoutes.post("/completions", async (req, res) => {
         },
         params_used: finalParams,
         pipeline: {
-          godmode,
+          danielsai,
           autotune: autotuneResult
             ? {
                 detected_context: autotuneResult.detectedContext,
@@ -530,7 +530,7 @@ consortiumRoutes.post("/completions", async (req, res) => {
         tier,
         stream: true,
         pipeline: {
-          godmode,
+          danielsai,
           autotune: !!autotuneResult,
           parseltongue: !!parseltongueResult,
           stm_modules: stm_modules || [],
@@ -698,7 +698,7 @@ consortiumRoutes.post("/completions", async (req, res) => {
       tier,
       stream: false,
       pipeline: {
-        godmode,
+        danielsai,
         autotune: !!autotuneResult,
         parseltongue: !!parseltongueResult,
         stm_modules: stm_modules || [],
@@ -755,7 +755,7 @@ consortiumRoutes.post("/completions", async (req, res) => {
       },
       params_used: finalParams,
       pipeline: {
-        godmode,
+        danielsai,
         autotune: autotuneResult
           ? {
               detected_context: autotuneResult.detectedContext,

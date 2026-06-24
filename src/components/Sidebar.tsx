@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useStore } from '@/store'
+import { useState } from "react";
+import { useStore } from "@/store";
 import {
   Plus,
   MessageSquare,
@@ -11,14 +11,14 @@ import {
   ChevronRight,
   Zap,
   Skull,
-  Terminal
-} from 'lucide-react'
-import { PersonaSelector } from './PersonaSelector'
-import { ModelSelector } from './ModelSelector'
+  Terminal,
+} from "lucide-react";
+import { PersonaSelector } from "./PersonaSelector";
+import { ModelSelector } from "./ModelSelector";
 
 interface SidebarProps {
-  isOpen: boolean
-  onToggle: () => void
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
 export function Sidebar({ isOpen, onToggle }: SidebarProps) {
@@ -29,14 +29,14 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
     selectConversation,
     deleteConversation,
     setShowSettings,
-    theme
-  } = useStore()
+    theme,
+  } = useStore();
 
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const handleNewChat = () => {
-    createConversation()
-  }
+    createConversation();
+  };
 
   return (
     <>
@@ -57,7 +57,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           fixed md:relative z-40 h-screen
           bg-theme-dim border-r border-theme-primary
           transition-all duration-300 ease-in-out
-          ${isOpen ? 'w-72' : 'w-0'}
+          ${isOpen ? "w-72" : "w-0"}
           overflow-hidden
         `}
       >
@@ -67,8 +67,11 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-2xl relative -top-[2px]">🜏</span>
-                <h1 className="text-xl font-bold theme-primary glitch glow-primary" data-text="G0DM0DƎ">
-                  G0DM0<span className="flipped-e">D</span><span className="flipped-e-soft">E</span>
+                <h1
+                  className="text-xl font-bold theme-primary glitch glow-primary"
+                  data-text="DANIELS AI"
+                >
+                  DANIELS AI
                 </h1>
               </div>
               <button
@@ -105,7 +108,9 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
               <div className="text-center py-8 theme-secondary text-sm">
                 <Terminal className="w-8 h-8 mx-auto mb-2 opacity-50" />
                 <p>No conversations yet</p>
-                <p className="text-xs mt-1 opacity-70">Start a new chat to begin</p>
+                <p className="text-xs mt-1 opacity-70">
+                  Start a new chat to begin
+                </p>
               </div>
             ) : (
               <div className="space-y-1">
@@ -115,9 +120,10 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                     className={`
                       group flex items-center gap-2 p-2 rounded-lg cursor-pointer
                       transition-all duration-200
-                      ${currentConversationId === conv.id
-                        ? 'bg-theme-accent border border-theme-primary'
-                        : 'hover:bg-theme-accent/50'
+                      ${
+                        currentConversationId === conv.id
+                          ? "bg-theme-accent border border-theme-primary"
+                          : "hover:bg-theme-accent/50"
                       }
                     `}
                     onClick={() => selectConversation(conv.id)}
@@ -131,8 +137,8 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                     {hoveredId === conv.id && (
                       <button
                         onClick={(e) => {
-                          e.stopPropagation()
-                          deleteConversation(conv.id)
+                          e.stopPropagation();
+                          deleteConversation(conv.id);
                         }}
                         className="p-1 hover:text-red-500 transition-colors"
                         aria-label="Delete conversation"
@@ -178,5 +184,5 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         </div>
       </aside>
     </>
-  )
+  );
 }
