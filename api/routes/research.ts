@@ -165,7 +165,7 @@ researchRoutes.get("/batches", async (req, res) => {
 // ── Batch: read a single file ────────────────────────────────────────
 // Path comes as wildcard: /v1/research/batch/metadata/batch_2024-01-01_0001.jsonl
 
-researchRoutes.get("/batch/:anyMatch(.*)", async (req, res) => {
+researchRoutes.get(/^\/batch\/(.*)$/, async (req, res) => {
   try {
     const filePath = (req.params as any)[0];
 
